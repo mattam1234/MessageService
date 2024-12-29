@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MessageService.Service.Subscriber
+﻿namespace MessageService.Service.Subscriber
 {
     public class SubscriberService
     {
@@ -28,11 +22,13 @@ namespace MessageService.Service.Subscriber
             //TODO: Implement this method
             throw new NotImplementedException();
         }
-        private void Update() {
+        private void Update()
+        {
             //TODO: Implement this method
             throw new NotImplementedException();
         }
-        public void DeleteSubscriber() {
+        public void DeleteSubscriber()
+        {
             //TODO: Implement this method
             throw new NotImplementedException();
         }

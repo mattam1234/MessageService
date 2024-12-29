@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MessageService.Model.Flow.enums;
+using System.Diagnostics;
 
 namespace MessageService.Model.Flow
 {
     public class Message
     {
         public Guid Id { get; set; }
-        public string message { get; set; }
+        public string? MessageName { get; set; }
+        public required Types MessageType { get; set; }
+        public string? MessageData { get; set; }
+        public Trace? MessageTrace { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
     }

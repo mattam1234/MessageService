@@ -1,6 +1,4 @@
-﻿using MessageService.Model.Application;
-
-namespace MessageService.Service.Publisher
+﻿namespace MessageService.Service.Publisher
 {
     public class PublisherService
     {

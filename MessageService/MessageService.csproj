@@ -20,4 +20,9 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MessageService.Model\MessageService.Model.csproj" />
+    <ProjectReference Include="..\MessageService.Service\MessageService.Service.csproj" />
+  </ItemGroup>
+
 </Project>
