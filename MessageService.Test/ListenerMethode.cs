@@ -1,10 +1,10 @@
 ﻿namespace MessageService.Test
 {
     [TestClass]
-    public sealed class Test1
+    public sealed class ListenerMethode
     {
         [TestMethod]
-        public void TestMethod1()
+        public void ListenerMethode1()
         {
         }
     }
