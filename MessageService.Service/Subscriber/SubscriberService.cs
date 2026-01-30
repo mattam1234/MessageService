@@ -1,36 +1,58 @@
-﻿namespace MessageService.Service.Subscriber
+﻿using MessageService.Model.Subscriber;
+
+namespace MessageService.Service.Subscriber
 {
     public class SubscriberService
     {
-        public void GetSubscriber()
+        private readonly Dictionary<Guid, SubscriberModel> _subscribers = new Dictionary<Guid, SubscriberModel>();
+
+        public SubscriberModel? GetSubscriber(Guid id)
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            return _subscribers.TryGetValue(id, out var subscriber) ? subscriber : null;
         }
-        public void GetSubscribers()
+
+        public IEnumerable<SubscriberModel> GetSubscribers()
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            return _subscribers.Values;
         }
-        public void Save()
+
+        public SubscriberModel Save(SubscriberModel subscriber)
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            if (subscriber.Id == Guid.Empty)
+            {
+                subscriber.Id = Guid.NewGuid();
+                Create(subscriber);
+            }
+            else
+            {
+                Update(subscriber);
+            }
+            return subscriber;
         }
-        private void Create()
+
+        private void Create(SubscriberModel subscriber)
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            subscriber.CreatedAt = DateTime.UtcNow;
+            subscriber.UpdatedAt = DateTime.UtcNow;
+            _subscribers[subscriber.Id] = subscriber;
         }
-        private void Update()
+
+        private void Update(SubscriberModel subscriber)
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            if (_subscribers.ContainsKey(subscriber.Id))
+            {
+                subscriber.UpdatedAt = DateTime.UtcNow;
+                _subscribers[subscriber.Id] = subscriber;
+            }
+            else
+            {
+                throw new KeyNotFoundException($"Subscriber with ID {subscriber.Id} not found.");
+            }
         }
-        public void DeleteSubscriber()
+
+        public bool DeleteSubscriber(Guid id)
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            return _subscribers.Remove(id);
         }
     }
 }

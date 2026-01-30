@@ -1,36 +1,58 @@
-﻿namespace MessageService.Service.Publisher
+﻿using MessageService.Model.Publisher;
+
+namespace MessageService.Service.Publisher
 {
     public class PublisherService
     {
-        public void GetPublisher()
+        private readonly Dictionary<Guid, PublisherModel> _publishers = new Dictionary<Guid, PublisherModel>();
+
+        public PublisherModel? GetPublisher(Guid id)
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            return _publishers.TryGetValue(id, out var publisher) ? publisher : null;
         }
-        public void GetPublishers()
+
+        public IEnumerable<PublisherModel> GetPublishers()
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            return _publishers.Values;
         }
-        public void Save()
+
+        public PublisherModel Save(PublisherModel publisher)
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            if (publisher.Id == Guid.Empty)
+            {
+                publisher.Id = Guid.NewGuid();
+                Create(publisher);
+            }
+            else
+            {
+                Update(publisher);
+            }
+            return publisher;
         }
-        private void Create()
+
+        private void Create(PublisherModel publisher)
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            publisher.CreatedAt = DateTime.UtcNow;
+            publisher.UpdatedAt = DateTime.UtcNow;
+            _publishers[publisher.Id] = publisher;
         }
-        private void Update()
+
+        private void Update(PublisherModel publisher)
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            if (_publishers.ContainsKey(publisher.Id))
+            {
+                publisher.UpdatedAt = DateTime.UtcNow;
+                _publishers[publisher.Id] = publisher;
+            }
+            else
+            {
+                throw new KeyNotFoundException($"Publisher with ID {publisher.Id} not found.");
+            }
         }
-        public void DeletePublisher()
+
+        public bool DeletePublisher(Guid id)
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            return _publishers.Remove(id);
         }
     }
 }
