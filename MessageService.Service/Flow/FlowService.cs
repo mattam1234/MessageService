@@ -40,15 +40,12 @@ namespace MessageService.Service.Flow
 
         private void Update(FlowModel flow)
         {
-            if (_flows.ContainsKey(flow.Id))
-            {
-                flow.UpdatedAt = DateTime.UtcNow;
-                _flows[flow.Id] = flow;
-            }
-            else
+            if (!_flows.ContainsKey(flow.Id))
             {
                 throw new KeyNotFoundException($"Flow with ID {flow.Id} not found.");
             }
+            flow.UpdatedAt = DateTime.UtcNow;
+            _flows[flow.Id] = flow;
         }
 
         public bool DeleteFlow(Guid id)

@@ -39,15 +39,12 @@ namespace MessageService.Service.Notifier
 
         private void Update(NotifierModel notifier)
         {
-            if (_notifiers.ContainsKey(notifier.Id))
-            {
-                notifier.UpdatedAt = DateTime.UtcNow;
-                _notifiers[notifier.Id] = notifier;
-            }
-            else
+            if (!_notifiers.ContainsKey(notifier.Id))
             {
                 throw new KeyNotFoundException($"Notifier with ID {notifier.Id} not found.");
             }
+            notifier.UpdatedAt = DateTime.UtcNow;
+            _notifiers[notifier.Id] = notifier;
         }
 
         public bool DeleteNotifier(Guid id)

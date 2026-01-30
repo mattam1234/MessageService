@@ -39,15 +39,12 @@ namespace MessageService.Service.Subscriber
 
         private void Update(SubscriberModel subscriber)
         {
-            if (_subscribers.ContainsKey(subscriber.Id))
-            {
-                subscriber.UpdatedAt = DateTime.UtcNow;
-                _subscribers[subscriber.Id] = subscriber;
-            }
-            else
+            if (!_subscribers.ContainsKey(subscriber.Id))
             {
                 throw new KeyNotFoundException($"Subscriber with ID {subscriber.Id} not found.");
             }
+            subscriber.UpdatedAt = DateTime.UtcNow;
+            _subscribers[subscriber.Id] = subscriber;
         }
 
         public bool DeleteSubscriber(Guid id)

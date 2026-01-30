@@ -32,19 +32,19 @@ namespace MessageService.Service.Application
 
         private void Create(ApplicationModel application)
         {
+            application.CreatedAt = DateTime.UtcNow;
+            application.UpdatedAt = DateTime.UtcNow;
             _applications[application.Id] = application;
         }
 
         private void Update(ApplicationModel application)
         {
-            if (_applications.ContainsKey(application.Id))
-            {
-                _applications[application.Id] = application;
-            }
-            else
+            if (!_applications.ContainsKey(application.Id))
             {
                 throw new KeyNotFoundException($"Application with ID {application.Id} not found.");
             }
+            application.UpdatedAt = DateTime.UtcNow;
+            _applications[application.Id] = application;
         }
 
         public bool DeleteApplication(Guid id)
