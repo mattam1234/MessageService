@@ -2,5 +2,8 @@
 {
     public enum ApplicationType
     {
+        Producer,
+        Consumer,
+        Both
     }
 }

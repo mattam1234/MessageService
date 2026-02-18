@@ -1,36 +1,58 @@
-﻿namespace MessageService.Service.Application
+﻿using MessageService.Model.Application;
+
+namespace MessageService.Service.Application
 {
     public class ApplicationService
     {
-        public void GetApplication()
+        private readonly Dictionary<Guid, ApplicationModel> _applications = new Dictionary<Guid, ApplicationModel>();
+
+        public ApplicationModel? GetApplication(Guid id)
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            return _applications.TryGetValue(id, out var application) ? application : null;
         }
-        public void GetApplications()
+
+        public IEnumerable<ApplicationModel> GetApplications()
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            return _applications.Values;
         }
-        public void Save()
+
+        public ApplicationModel Save(ApplicationModel application)
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            if (application.Id == Guid.Empty)
+            {
+                application.Id = Guid.NewGuid();
+                Create(application);
+            }
+            else
+            {
+                Update(application);
+            }
+            return application;
         }
-        private void Create()
+
+        private void Create(ApplicationModel application)
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            application.CreatedAt = DateTime.UtcNow;
+            application.UpdatedAt = DateTime.UtcNow;
+            _applications[application.Id] = application;
         }
-        private void Update()
+
+        private void Update(ApplicationModel application)
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            if (!_applications.TryGetValue(application.Id, out var existingApplication))
+            {
+                throw new KeyNotFoundException($"Application with ID {application.Id} not found.");
+            }
+            
+            // Preserve server-managed fields from the existing stored application
+            application.CreatedAt = existingApplication.CreatedAt;
+            application.UpdatedAt = DateTime.UtcNow;
+            _applications[application.Id] = application;
         }
-        public void DeleteApplication()
+
+        public bool DeleteApplication(Guid id)
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            return _applications.Remove(id);
         }
     }
 }

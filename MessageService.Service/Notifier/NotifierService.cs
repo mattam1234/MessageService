@@ -1,36 +1,58 @@
-﻿namespace MessageService.Service.Notifier
+﻿using MessageService.Model.Notifier;
+
+namespace MessageService.Service.Notifier
 {
     public class NotifierService
     {
-        public void GetNotifier()
+        private readonly Dictionary<Guid, NotifierModel> _notifiers = new Dictionary<Guid, NotifierModel>();
+
+        public NotifierModel? GetNotifier(Guid id)
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            return _notifiers.TryGetValue(id, out var notifier) ? notifier : null;
         }
-        public void GetNotifiers()
+
+        public IEnumerable<NotifierModel> GetNotifiers()
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            return _notifiers.Values;
         }
-        public void Save()
+
+        public NotifierModel Save(NotifierModel notifier)
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            if (notifier.Id == Guid.Empty)
+            {
+                notifier.Id = Guid.NewGuid();
+                Create(notifier);
+            }
+            else
+            {
+                Update(notifier);
+            }
+            return notifier;
         }
-        private void Create()
+
+        private void Create(NotifierModel notifier)
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            notifier.CreatedAt = DateTime.UtcNow;
+            notifier.UpdatedAt = DateTime.UtcNow;
+            _notifiers[notifier.Id] = notifier;
         }
-        private void Update()
+
+        private void Update(NotifierModel notifier)
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            if (!_notifiers.TryGetValue(notifier.Id, out var existingNotifier))
+            {
+                throw new KeyNotFoundException($"Notifier with ID {notifier.Id} not found.");
+            }
+            
+            // Preserve creation time from the existing notifier and update the modification time.
+            notifier.CreatedAt = existingNotifier.CreatedAt;
+            notifier.UpdatedAt = DateTime.UtcNow;
+            _notifiers[notifier.Id] = notifier;
         }
-        public void DeleteNotifier()
+
+        public bool DeleteNotifier(Guid id)
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            return _notifiers.Remove(id);
         }
     }
 }

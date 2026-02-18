@@ -1,37 +1,59 @@
 ﻿
+using MessageService.Model.Flow;
+
 namespace MessageService.Service.Flow
 {
     public class FlowService
     {
-        public void GetFlow()
+        private readonly Dictionary<Guid, FlowModel> _flows = new Dictionary<Guid, FlowModel>();
+
+        public FlowModel? GetFlow(Guid id)
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            return _flows.TryGetValue(id, out var flow) ? flow : null;
         }
-        public void GetFlows()
+
+        public IEnumerable<FlowModel> GetFlows()
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            return _flows.Values;
         }
-        public void Save()
+
+        public FlowModel Save(FlowModel flow)
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            if (flow.Id == Guid.Empty)
+            {
+                flow.Id = Guid.NewGuid();
+                Create(flow);
+            }
+            else
+            {
+                Update(flow);
+            }
+            return flow;
         }
-        private void Create()
+
+        private void Create(FlowModel flow)
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            flow.CreatedAt = DateTime.UtcNow;
+            flow.UpdatedAt = DateTime.UtcNow;
+            _flows[flow.Id] = flow;
         }
-        private void Update()
+
+        private void Update(FlowModel flow)
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            if (!_flows.TryGetValue(flow.Id, out var existingFlow))
+            {
+                throw new KeyNotFoundException($"Flow with ID {flow.Id} not found.");
+            }
+            
+            // Preserve original CreatedAt, only update the modification time.
+            flow.CreatedAt = existingFlow.CreatedAt;
+            flow.UpdatedAt = DateTime.UtcNow;
+            _flows[flow.Id] = flow;
         }
-        public void DeleteFlow()
+
+        public bool DeleteFlow(Guid id)
         {
-            //TODO: Implement this method
-            throw new NotImplementedException();
+            return _flows.Remove(id);
         }
     }
 }
