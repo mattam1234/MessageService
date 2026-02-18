@@ -39,10 +39,13 @@ namespace MessageService.Service.Subscriber
 
         private void Update(SubscriberModel subscriber)
         {
-            if (!_subscribers.ContainsKey(subscriber.Id))
+            if (!_subscribers.TryGetValue(subscriber.Id, out var existingSubscriber))
             {
                 throw new KeyNotFoundException($"Subscriber with ID {subscriber.Id} not found.");
             }
+            
+            // Preserve server-managed fields from the existing stored subscriber
+            subscriber.CreatedAt = existingSubscriber.CreatedAt;
             subscriber.UpdatedAt = DateTime.UtcNow;
             _subscribers[subscriber.Id] = subscriber;
         }

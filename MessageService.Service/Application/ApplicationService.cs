@@ -39,10 +39,13 @@ namespace MessageService.Service.Application
 
         private void Update(ApplicationModel application)
         {
-            if (!_applications.ContainsKey(application.Id))
+            if (!_applications.TryGetValue(application.Id, out var existingApplication))
             {
                 throw new KeyNotFoundException($"Application with ID {application.Id} not found.");
             }
+            
+            // Preserve server-managed fields from the existing stored application
+            application.CreatedAt = existingApplication.CreatedAt;
             application.UpdatedAt = DateTime.UtcNow;
             _applications[application.Id] = application;
         }

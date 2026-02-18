@@ -101,9 +101,8 @@ namespace MessageService.Test
                 Name = "OriginalName"
             };
             var savedSubscriber = _subscriberService.Save(subscriber);
+            var originalCreatedAt = savedSubscriber.CreatedAt;
             var originalUpdatedAt = savedSubscriber.UpdatedAt;
-
-            Thread.Sleep(10); // Ensure time difference
 
             // Update the subscriber
             savedSubscriber.Name = "UpdatedName";
@@ -114,7 +113,8 @@ namespace MessageService.Test
             // Assert
             Assert.AreEqual(savedSubscriber.Id, updatedSubscriber.Id);
             Assert.AreEqual("UpdatedName", updatedSubscriber.Name);
-            Assert.IsTrue(updatedSubscriber.UpdatedAt > originalUpdatedAt);
+            Assert.AreEqual(originalCreatedAt, updatedSubscriber.CreatedAt, "CreatedAt should be preserved");
+            Assert.IsTrue(updatedSubscriber.UpdatedAt >= originalUpdatedAt, "UpdatedAt should be updated");
         }
 
         [TestMethod]

@@ -40,10 +40,13 @@ namespace MessageService.Service.Flow
 
         private void Update(FlowModel flow)
         {
-            if (!_flows.ContainsKey(flow.Id))
+            if (!_flows.TryGetValue(flow.Id, out var existingFlow))
             {
                 throw new KeyNotFoundException($"Flow with ID {flow.Id} not found.");
             }
+            
+            // Preserve original CreatedAt, only update the modification time.
+            flow.CreatedAt = existingFlow.CreatedAt;
             flow.UpdatedAt = DateTime.UtcNow;
             _flows[flow.Id] = flow;
         }

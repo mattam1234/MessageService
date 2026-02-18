@@ -39,10 +39,13 @@ namespace MessageService.Service.Notifier
 
         private void Update(NotifierModel notifier)
         {
-            if (!_notifiers.ContainsKey(notifier.Id))
+            if (!_notifiers.TryGetValue(notifier.Id, out var existingNotifier))
             {
                 throw new KeyNotFoundException($"Notifier with ID {notifier.Id} not found.");
             }
+            
+            // Preserve creation time from the existing notifier and update the modification time.
+            notifier.CreatedAt = existingNotifier.CreatedAt;
             notifier.UpdatedAt = DateTime.UtcNow;
             _notifiers[notifier.Id] = notifier;
         }

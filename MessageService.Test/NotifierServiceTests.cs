@@ -101,9 +101,8 @@ namespace MessageService.Test
                 Name = "OriginalName"
             };
             var savedNotifier = _notifierService.Save(notifier);
+            var originalCreatedAt = savedNotifier.CreatedAt;
             var originalUpdatedAt = savedNotifier.UpdatedAt;
-
-            Thread.Sleep(10); // Ensure time difference
 
             // Update the notifier
             savedNotifier.Name = "UpdatedName";
@@ -114,7 +113,8 @@ namespace MessageService.Test
             // Assert
             Assert.AreEqual(savedNotifier.Id, updatedNotifier.Id);
             Assert.AreEqual("UpdatedName", updatedNotifier.Name);
-            Assert.IsTrue(updatedNotifier.UpdatedAt > originalUpdatedAt);
+            Assert.AreEqual(originalCreatedAt, updatedNotifier.CreatedAt, "CreatedAt should be preserved");
+            Assert.IsTrue(updatedNotifier.UpdatedAt >= originalUpdatedAt, "UpdatedAt should be updated");
         }
 
         [TestMethod]

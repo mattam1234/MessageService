@@ -39,10 +39,13 @@ namespace MessageService.Service.Publisher
 
         private void Update(PublisherModel publisher)
         {
-            if (!_publishers.ContainsKey(publisher.Id))
+            if (!_publishers.TryGetValue(publisher.Id, out var existingPublisher))
             {
                 throw new KeyNotFoundException($"Publisher with ID {publisher.Id} not found.");
             }
+            
+            // Preserve creation time while updating the publisher
+            publisher.CreatedAt = existingPublisher.CreatedAt;
             publisher.UpdatedAt = DateTime.UtcNow;
             _publishers[publisher.Id] = publisher;
         }

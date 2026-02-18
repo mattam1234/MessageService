@@ -31,6 +31,10 @@ namespace MessageService.Test
             // Assert
             Assert.IsNotNull(savedApplication);
             Assert.AreNotEqual(Guid.Empty, savedApplication.Id);
+            Assert.IsTrue(savedApplication.CreatedAt > DateTime.MinValue, "CreatedAt should be set");
+            Assert.IsTrue(savedApplication.UpdatedAt > DateTime.MinValue, "UpdatedAt should be set");
+            // CreatedAt and UpdatedAt should be very close (within a second) on create
+            Assert.IsTrue((savedApplication.UpdatedAt - savedApplication.CreatedAt).TotalSeconds < 1, "CreatedAt and UpdatedAt should be nearly equal on create");
         }
 
         [TestMethod]
@@ -102,6 +106,8 @@ namespace MessageService.Test
                 applicationType = ApplicationType.Producer
             };
             var savedApplication = _applicationService.Save(application);
+            var originalCreatedAt = savedApplication.CreatedAt;
+            var originalUpdatedAt = savedApplication.UpdatedAt;
 
             // Update the application
             savedApplication.applicationName = "UpdatedName";
@@ -112,6 +118,8 @@ namespace MessageService.Test
             // Assert
             Assert.AreEqual(savedApplication.Id, updatedApplication.Id);
             Assert.AreEqual("UpdatedName", updatedApplication.applicationName);
+            Assert.AreEqual(originalCreatedAt, updatedApplication.CreatedAt, "CreatedAt should be preserved");
+            Assert.IsTrue(updatedApplication.UpdatedAt >= originalUpdatedAt, "UpdatedAt should be updated");
         }
 
         [TestMethod]

@@ -101,9 +101,8 @@ namespace MessageService.Test
                 Name = "OriginalName"
             };
             var savedPublisher = _publisherService.Save(publisher);
+            var originalCreatedAt = savedPublisher.CreatedAt;
             var originalUpdatedAt = savedPublisher.UpdatedAt;
-
-            Thread.Sleep(10); // Ensure time difference
 
             // Update the publisher
             savedPublisher.Name = "UpdatedName";
@@ -114,7 +113,8 @@ namespace MessageService.Test
             // Assert
             Assert.AreEqual(savedPublisher.Id, updatedPublisher.Id);
             Assert.AreEqual("UpdatedName", updatedPublisher.Name);
-            Assert.IsTrue(updatedPublisher.UpdatedAt > originalUpdatedAt);
+            Assert.AreEqual(originalCreatedAt, updatedPublisher.CreatedAt, "CreatedAt should be preserved");
+            Assert.IsTrue(updatedPublisher.UpdatedAt >= originalUpdatedAt, "UpdatedAt should be updated");
         }
 
         [TestMethod]

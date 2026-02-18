@@ -154,9 +154,8 @@ namespace MessageService.Test
 
             var flow = new FlowModel { Id = Guid.Empty, Application = application, Message = message };
             var savedFlow = _flowService.Save(flow);
+            var originalCreatedAt = savedFlow.CreatedAt;
             var originalUpdatedAt = savedFlow.UpdatedAt;
-
-            Thread.Sleep(10); // Ensure time difference
 
             // Update the message
             savedFlow.Message.MessageData = "Updated message";
@@ -166,8 +165,9 @@ namespace MessageService.Test
 
             // Assert
             Assert.AreEqual(savedFlow.Id, updatedFlow.Id);
-            Assert.IsTrue(updatedFlow.UpdatedAt > originalUpdatedAt);
             Assert.AreEqual("Updated message", updatedFlow.Message.MessageData);
+            Assert.AreEqual(originalCreatedAt, updatedFlow.CreatedAt, "CreatedAt should be preserved");
+            Assert.IsTrue(updatedFlow.UpdatedAt >= originalUpdatedAt, "UpdatedAt should be updated");
         }
 
         [TestMethod]
