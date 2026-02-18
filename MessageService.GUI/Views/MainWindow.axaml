@@ -1,0 +1,222 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:MessageService.GUI.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="768"
+        x:Class="MessageService.GUI.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="MessageService Management Console"
+        Width="1024" Height="768">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <DockPanel>
+        <!-- Header -->
+        <Border DockPanel.Dock="Top" Background="#2C3E50" Padding="20,15">
+            <StackPanel>
+                <TextBlock Text="MessageService Management Console" 
+                          FontSize="24" FontWeight="Bold" 
+                          Foreground="White"/>
+                <TextBlock Text="Manage Applications, Publishers, Subscribers, Notifiers, and Flows" 
+                          FontSize="12" 
+                          Foreground="#BDC3C7" Margin="0,5,0,0"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Main Content -->
+        <TabControl Margin="10">
+            <!-- Applications Tab -->
+            <TabItem Header="Applications">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                        <Button Content="Add Application" Command="{Binding AddApplicationCommand}" Margin="0,0,10,0"/>
+                        <Button Content="Delete Selected" Command="{Binding DeleteApplicationCommand}" Margin="0,0,10,0"/>
+                        <Button Content="Refresh" Command="{Binding RefreshApplicationsCommand}"/>
+                    </StackPanel>
+
+                    <DataGrid Grid.Row="1" 
+                             ItemsSource="{Binding Applications}"
+                             SelectedItem="{Binding SelectedApplication}"
+                             AutoGenerateColumns="False"
+                             IsReadOnly="True"
+                             GridLinesVisibility="All"
+                             BorderThickness="1"
+                             BorderBrush="Gray">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="250"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding applicationName}" Width="*"/>
+                            <DataGridTextColumn Header="Type" Binding="{Binding applicationType}" Width="150"/>
+                            <DataGridTextColumn Header="Created" Binding="{Binding CreatedAt}" Width="180"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <TextBlock Grid.Row="2" 
+                              Text="{Binding ApplicationStatusText}" 
+                              Margin="0,10,0,0" 
+                              FontStyle="Italic"/>
+                </Grid>
+            </TabItem>
+
+            <!-- Publishers Tab -->
+            <TabItem Header="Publishers">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                        <Button Content="Add Publisher" Command="{Binding AddPublisherCommand}" Margin="0,0,10,0"/>
+                        <Button Content="Delete Selected" Command="{Binding DeletePublisherCommand}" Margin="0,0,10,0"/>
+                        <Button Content="Refresh" Command="{Binding RefreshPublishersCommand}"/>
+                    </StackPanel>
+
+                    <DataGrid Grid.Row="1" 
+                             ItemsSource="{Binding Publishers}"
+                             SelectedItem="{Binding SelectedPublisher}"
+                             AutoGenerateColumns="False"
+                             IsReadOnly="True"
+                             GridLinesVisibility="All"
+                             BorderThickness="1"
+                             BorderBrush="Gray">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="250"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
+                            <DataGridTextColumn Header="Created" Binding="{Binding CreatedAt}" Width="180"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <TextBlock Grid.Row="2" 
+                              Text="{Binding PublisherStatusText}" 
+                              Margin="0,10,0,0" 
+                              FontStyle="Italic"/>
+                </Grid>
+            </TabItem>
+
+            <!-- Subscribers Tab -->
+            <TabItem Header="Subscribers">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                        <Button Content="Add Subscriber" Command="{Binding AddSubscriberCommand}" Margin="0,0,10,0"/>
+                        <Button Content="Delete Selected" Command="{Binding DeleteSubscriberCommand}" Margin="0,0,10,0"/>
+                        <Button Content="Refresh" Command="{Binding RefreshSubscribersCommand}"/>
+                    </StackPanel>
+
+                    <DataGrid Grid.Row="1" 
+                             ItemsSource="{Binding Subscribers}"
+                             SelectedItem="{Binding SelectedSubscriber}"
+                             AutoGenerateColumns="False"
+                             IsReadOnly="True"
+                             GridLinesVisibility="All"
+                             BorderThickness="1"
+                             BorderBrush="Gray">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="250"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
+                            <DataGridTextColumn Header="Created" Binding="{Binding CreatedAt}" Width="180"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <TextBlock Grid.Row="2" 
+                              Text="{Binding SubscriberStatusText}" 
+                              Margin="0,10,0,0" 
+                              FontStyle="Italic"/>
+                </Grid>
+            </TabItem>
+
+            <!-- Notifiers Tab -->
+            <TabItem Header="Notifiers">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                        <Button Content="Add Notifier" Command="{Binding AddNotifierCommand}" Margin="0,0,10,0"/>
+                        <Button Content="Delete Selected" Command="{Binding DeleteNotifierCommand}" Margin="0,0,10,0"/>
+                        <Button Content="Refresh" Command="{Binding RefreshNotifiersCommand}"/>
+                    </StackPanel>
+
+                    <DataGrid Grid.Row="1" 
+                             ItemsSource="{Binding Notifiers}"
+                             SelectedItem="{Binding SelectedNotifier}"
+                             AutoGenerateColumns="False"
+                             IsReadOnly="True"
+                             GridLinesVisibility="All"
+                             BorderThickness="1"
+                             BorderBrush="Gray">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="250"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*"/>
+                            <DataGridTextColumn Header="Created" Binding="{Binding CreatedAt}" Width="180"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <TextBlock Grid.Row="2" 
+                              Text="{Binding NotifierStatusText}" 
+                              Margin="0,10,0,0" 
+                              FontStyle="Italic"/>
+                </Grid>
+            </TabItem>
+
+            <!-- Flows Tab -->
+            <TabItem Header="Flows">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                        <Button Content="Add Flow" Command="{Binding AddFlowCommand}" Margin="0,0,10,0"/>
+                        <Button Content="Delete Selected" Command="{Binding DeleteFlowCommand}" Margin="0,0,10,0"/>
+                        <Button Content="Refresh" Command="{Binding RefreshFlowsCommand}"/>
+                    </StackPanel>
+
+                    <DataGrid Grid.Row="1" 
+                             ItemsSource="{Binding Flows}"
+                             SelectedItem="{Binding SelectedFlow}"
+                             AutoGenerateColumns="False"
+                             IsReadOnly="True"
+                             GridLinesVisibility="All"
+                             BorderThickness="1"
+                             BorderBrush="Gray">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="250"/>
+                            <DataGridTextColumn Header="Application Name" Binding="{Binding Application.applicationName}" Width="200"/>
+                            <DataGridTextColumn Header="Message Type" Binding="{Binding Message.MessageType}" Width="150"/>
+                            <DataGridTextColumn Header="Message Data" Binding="{Binding Message.MessageData}" Width="*"/>
+                            <DataGridTextColumn Header="Created" Binding="{Binding CreatedAt}" Width="180"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <TextBlock Grid.Row="2" 
+                              Text="{Binding FlowStatusText}" 
+                              Margin="0,10,0,0" 
+                              FontStyle="Italic"/>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+
+</Window>
